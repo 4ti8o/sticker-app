@@ -141,8 +141,10 @@ fun MainContent(
                         StickerPackItem(
                             pack = pack,
                             onDelete = {
-                                repository.deletePack(pack.identifier)
-                                refreshPacks()
+                                scope.launch {
+                                    withContext(Dispatchers.IO) { repository.deletePack(pack.identifier) }
+                                    refreshPacks()
+                                }
                             }
                         )
                     }
